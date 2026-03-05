@@ -1,5 +1,21 @@
+import dotenv from "dotenv";
 import request from "supertest";
 import app from "../src/app.js";
+import connectDB from "../src/config/db.js";
+import User from "../src/models/User.js";
+
+dotenv.config();
+
+beforeAll(async () => {
+  await connectDB();
+  // Clean up any existing test user before running tests
+  await User.deleteOne({ email: "test@example.com" });
+});
+
+afterAll(async () => {
+  // Clean up after tests
+  await User.deleteOne({ email: "test@example.com" });
+});
 
 describe("Auth Routes", () => {
 
